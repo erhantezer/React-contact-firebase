@@ -193,15 +193,15 @@ const handleDelete = id => {
                             <p className="bg-white mb-4 p-2 rounded-3">
                                 Contacts
                             </p>
-                            <table className="table bg-white form-control w-100 rounded-3 ">
+                            <table className="table bg-white form-control w-100 rounded-3">
                             <thead className="text-info w-100 ">
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Gender</th>
-                                <th scope="col">Delete</th>
-                                <th scope="col">Edit</th>
+                                <th className="col-3" scope="col">#</th>
+                                <th className="col-2" scope="col">Name</th>
+                                <th className="col-2" scope="col">Phone</th>
+                                <th className="col-2" scope="col">Gender</th>
+                                <th className="col-3" scope="col">Delete</th>
+                                <th className="col-2" scope="col">Edit</th>
                             </tr>
                             </thead>
                                 <tbody>
