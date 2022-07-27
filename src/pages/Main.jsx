@@ -195,7 +195,7 @@ const handleDelete = id => {
                                 Contacts
                             </p>
                             <table className="table bg-white form-control w-100 rounded-3 ">
-                            <thead className="text-info w-100  ">
+                            <thead className="text-info w-100 ">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
