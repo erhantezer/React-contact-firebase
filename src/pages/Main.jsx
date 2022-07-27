@@ -1,6 +1,7 @@
 import "./Main.css";
 import { FaUserAlt } from 'react-icons/fa';
 import { FaPhone } from 'react-icons/fa';
+import { useState } from "react";
 // import Toastify from "../utils/toast";
 
 
@@ -8,6 +9,8 @@ import { FaPhone } from 'react-icons/fa';
 
 
 const Main = () => {
+const [name, setName] = useState("");
+const [phone, setPhone] = useState("");
 
 
 
