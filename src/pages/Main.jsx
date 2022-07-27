@@ -34,6 +34,7 @@ const getContacts = async () => {
     getContacts();
   })
 
+  //? firebase içerisinde veri oluşturma
   const createContact = async (name, phone, select) => {
     await addDoc(contactsCollectionRef, {
       name: name,
@@ -65,6 +66,7 @@ const getContacts = async () => {
 const handleDelete = id => {
     deleteContact(id)
   }
+  //? firebase delete isteği oluşturma
   const deleteContact = async id => {
     const contactDoc = doc(db, 'contacts', id)
     await deleteDoc(contactDoc)
@@ -81,6 +83,7 @@ const handleDelete = id => {
     setEditId(user.id)
   }
 
+  //? firebase edit  oluşturma
   const editContact = async (name, phone, select, editId) => {
     const userDoc = doc(db, 'contacts', editId)
     const newFields = { name: name, phone: phone, select: select }
