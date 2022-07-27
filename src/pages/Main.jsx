@@ -1,9 +1,18 @@
 import "./Main.css";
-import { FaUserAlt } from 'react-icons/fa';
-import { FaPhone } from 'react-icons/fa';
-import { useState } from "react";
-// import Toastify from "../utils/toast";
-
+import { FaEdit, FaTrashAlt } from 'react-icons/fa'
+import { FaUserAlt, FaPhone } from 'react-icons/fa'
+import { useEffect, useState } from "react";
+import toast from "../utils/toast";
+import { db } from '../utils/firebase';
+import et from "../assets/e-favicon.png"
+import {
+    collection,
+    getDocs,
+    addDoc,
+    deleteDoc,
+    doc,
+    updateDoc,
+  } from 'firebase/firestore'
 
 
 
@@ -11,25 +20,92 @@ import { useState } from "react";
 const Main = () => {
 const [name, setName] = useState("");
 const [phone, setPhone] = useState("");
+const [select, setSelect] = useState("");
+const contactsCollectionRef = collection(db, 'contacts');
+const [contactsList, setContactsList] = useState([]);
+const [editState, setEditState] = useState(false)
+const [editId, setEditId] = useState(0)
+
+const getContacts = async () => {
+    const data = await getDocs(contactsCollectionRef)
+    setContactsList(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+  }
+  useEffect(() => {
+    getContacts();
+  })
+
+  const createContact = async (name, phone, select) => {
+    await addDoc(contactsCollectionRef, {
+      name: name,
+      phone: phone,
+      select: select,
+    })
+    getContacts()
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (editState) {
+      editContact(name, phone, select, editId)
+      setName('')
+      setPhone('')
+      setSelect('')
+      setEditState(false)
+    toast("New Contact")
+    } else {
+      createContact(name, phone, select)
+      setName('')
+      setPhone('')
+      setSelect('')
+      toast("New Contact")
+    }
+    
+  }
+
+const handleDelete = id => {
+    deleteContact(id)
+  }
+  const deleteContact = async id => {
+    const contactDoc = doc(db, 'contacts', id)
+    await deleteDoc(contactDoc)
+    getContacts()
+    toast("Delete Success")
+  }
 
 
+  const handleEdit = user => {
+    setName(user.name)
+    setPhone(user.phone)
+    setSelect(user.select)
+    setEditState(true)
+    setEditId(user.id)
+    
+  }
 
-
-
+  const editContact = async (name, phone, select, editId) => {
+    const userDoc = doc(db, 'contacts', editId)
+    const newFields = { name: name, phone: phone, select: select }
+    await updateDoc(userDoc, newFields)
+    getContacts()
+    toast("Edit Success")
+  }
 
   return (
+    <>
+    
     <div
-    className="   d-flex justify-content-center flex-column align-items-center"
+    className=" d-flex justify-content-center flex-column align-items-center"
     style={{ height: '100vh', width: '100%' }}>
         <div className="container  text-center">
             <div className="row">
             <div className="mb-5 col-md-4 col-xs-12 ">
               <p className="bg-white rounded-3 p-2">
+              <img src={et} alt="et" className="" style={{width:"30px"}}/>
                 <i className="text-info">{'<TopGun/>'}</i> DESIGN
                </p>
                <div className="bg-white rounded-3">
                 <p>Add Contact</p>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="form-control">
                         <div style={{ position: 'relative' }}>
                             <FaUserAlt
@@ -44,6 +120,7 @@ const [phone, setPhone] = useState("");
                                 type="text"
                                 className="form-control mt-3 ps-4 "
                                 id="name"
+                                value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Name"/>
                                 </div>
@@ -59,6 +136,7 @@ const [phone, setPhone] = useState("");
                                 type="text"
                                 className="form-control mt-3  ps-4"
                                 id="phone"
+                                value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                                 placeholder="Phone Number" />
                                 </div>
@@ -73,6 +151,7 @@ const [phone, setPhone] = useState("");
                                     padding: '.4rem',
                                     }}
                                     id="select"
+                                    value={select}
                                     placeholder="Gender"
                                     onChange={(e) =>setSelect(e.target.value)}
                                     required >
@@ -83,12 +162,13 @@ const [phone, setPhone] = useState("");
                                     <option value="other">Other</option>
                                 </select>
                                 </div> 
-                                {["edit"] ? (
+                                {editState ? (
                                     <button
                                         type="submit"
                                         className="btn btn-info form-control text-white"
                                     >
                                         Edit
+                                       
                                     </button>
                                     ) : (
                                     <button
@@ -125,7 +205,35 @@ const [phone, setPhone] = useState("");
                                 <th scope="col">Edit</th>
                             </tr>
                             </thead>
-                                        
+                                <tbody>
+                                        {contactsList && contactsList?.map((user, index) => (
+                                            <tr key={index}>
+                                                <th scope="row">{index+1}</th>
+                                                <td>{user.name}</td>
+                                                <td>{user.phone}</td>
+                                                <td>{user.select}</td>
+                                                <td>
+                                                    <FaTrashAlt
+                                                    onClick={() => handleDelete(user.id)}
+                                                    style={{ cursor: 'pointer', color: '#ac0606' }}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <FaEdit
+                                                    onClick={() => handleEdit(user)}
+                                                    style={{ cursor: 'pointer', color: '#037005' }}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {contactsList.length === 0 && (
+                                            <tr>
+                                                <td colSpan="6"> Loading... </td>
+                                                
+                                            </tr>
+                                            
+                                        )}
+                                </tbody>       
                             </table>
 
                         </div>
@@ -134,7 +242,9 @@ const [phone, setPhone] = useState("");
             </div>
         </div>
     </div>
+    
+    </>
   )
 }
 
-export default Main
+export default Main;
