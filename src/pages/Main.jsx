@@ -79,8 +79,8 @@ const handleDelete = id => {
     setName(user.name)
     setPhone(user.phone)
     setSelect(user.select)
-    setEditState(true)
     setEditId(user.id)
+    setEditState(true)
   }
 
   //? firebase edit  oluşturma
