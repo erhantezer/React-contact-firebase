@@ -41,21 +41,23 @@ const Main = () => {
                                 type="text"
                                 className="form-control mt-3 ps-4 "
                                 id="name"
+                                onChange={(e) => setName(e.target.value)}
                                 placeholder="Name"/>
                                 </div>
                                 <div style={{ position: "relative" }}>
-                                    <FaPhone
-                                    style={{
-                                        position: 'absolute ',
-                                        top: '10px',
-                                        left: '5px',
-                                        opacity: '0.5',
-                                      }}/>
-                                      <input
-                                        type="text"
-                                        className="form-control mt-3  ps-4"
-                                        id="phone"
-                                        placeholder="Phone Number" />
+                                <FaPhone
+                                style={{
+                                position: 'absolute ',
+                                top: '10px',
+                                left: '5px',
+                                opacity: '0.5',
+                                }}/>
+                                <input
+                                type="text"
+                                className="form-control mt-3  ps-4"
+                                id="phone"
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder="Phone Number" />
                                 </div>
                                 <div className="input-group mb-3">
                                 <select
@@ -69,6 +71,7 @@ const Main = () => {
                                     }}
                                     id="select"
                                     placeholder="Gender"
+                                    onChange={(e) =>setSelect(e.target.value)}
                                     required >
 
                                     <option value="">Gender</option>
