@@ -79,7 +79,6 @@ const handleDelete = id => {
     setSelect(user.select)
     setEditState(true)
     setEditId(user.id)
-    
   }
 
   const editContact = async (name, phone, select, editId) => {
