@@ -18,13 +18,14 @@ import {
 
 
 const Main = () => {
+
 const [name, setName] = useState("");
 const [phone, setPhone] = useState("");
 const [select, setSelect] = useState("");
-const contactsCollectionRef = collection(db, 'contacts');
 const [contactsList, setContactsList] = useState([]);
-const [editState, setEditState] = useState(false)
-const [editId, setEditId] = useState(0)
+const [editState, setEditState] = useState(false);
+const [editId, setEditId] = useState(0);
+const contactsCollectionRef = collection(db, 'contacts');
 
 const getContacts = async () => {
     const data = await getDocs(contactsCollectionRef)
