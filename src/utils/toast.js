@@ -2,6 +2,7 @@ import {toast} from "react-toastify"
 
 
 const Toastify=(msg)=>{
+
 toast.success(msg, {
     position: "bottom-center",
     autoClose: 4000,
@@ -12,5 +13,6 @@ toast.success(msg, {
     progress: undefined,
     });
 }
-    export default Toastify;
+
+export default Toastify;
 
