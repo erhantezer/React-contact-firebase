@@ -16,7 +16,6 @@ import {
 
 
 
-
 const Main = () => {
 
 const [name, setName] = useState("");
